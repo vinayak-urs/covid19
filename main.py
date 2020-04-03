@@ -4,13 +4,9 @@ from bs4 import BeautifulSoup
 import time
 
 
-# def notifyMe(head, txt):
-#     notification.notify(
-#         title=head,
-#         message=txt,
-#         app_icon="C:\\Users\\Gaviria\\Desktop\\covid19\\icon.ico",
-#         timeout=15
-#     )
+def notifyMe(head, txt):
+    notification.notify(title=head, message=txt,
+                        app_icon='C:\\Users\\Gaviria\\Desktop\\covid19\\icon.ico', timeout=10, ticker='', toast=False)
 
 
 def getdata(url):
@@ -33,12 +29,11 @@ if __name__ == "__main__":
         myDataStr += tr.get_text()
     myDataStr = myDataStr[1:]
     itemlist = myDataStr.split("\n\n")
-    itemlst = itemlist[:27]
+    itemlst = itemlist[:29]
     # itemtotal = list(map(list, itemlist[27:]))
-    itemtotal = itemlist[27:28]
+    itemtotal = itemlist[30:31]
     total2 = []
-    total2 = itemlist[28:]
-    # print(itemlist[29])
+    total2 = itemlist[31:33]
     ind = ""
     for i in itemtotal:
         ind += i
@@ -47,7 +42,8 @@ if __name__ == "__main__":
         ind += i
     ortotal = []
     ortotal = ind.split("\n")
-    # ortotal.insert(1, "INDIAN")
+    # print(ortotal)
+    ortotal.insert(0, 000)
     itemls = []
     for item in itemlst:
         itemls.append(item.split("\n"))
@@ -56,12 +52,12 @@ if __name__ == "__main__":
         item[2] = int(item[2])
 
     itemls.sort(key=totalcase, reverse=True)
-    itemls = itemls[:10]
+    itemls = itemls[:3]
     itemls.append(ortotal)
 
-    for item in itemls[:11]:
+    for item in itemls[:4]:
         print(item)
-        # nTitle = " Cases of COVID19"
-        # nText = f"State  {item[1]}\n Total case {item[2]}\n Cured {item[3]} \n Death {item[4]}\n"
-        # notifyMe(nTitle, nText)
-        time.sleep(0.100)
+        nTitle = " Cases of COVID19"
+        nText = f"State  {item[1]}\n Total case {item[2]}\n Cured {item[3]} \n Death {item[4]}\n"
+        notifyMe(nTitle, nText)
+        time.sleep(5)
