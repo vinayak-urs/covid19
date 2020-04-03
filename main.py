@@ -50,14 +50,17 @@ if __name__ == "__main__":
     # # print(itemlst)
     for item in itemls:
         item[2] = int(item[2])
-
+    ortotal[1] = "INDIA"
     itemls.sort(key=totalcase, reverse=True)
     itemls = itemls[:3]
     itemls.append(ortotal)
-
+    print("STATES/CITY  CASES CURED DIED")
     for item in itemls[:4]:
-        print(item)
+        for i in item[1:]:
+            print(i, end="  ")
+        print("")
         nTitle = " Cases of COVID19"
-        nText = f"State  {item[1]}\n Total case {item[2]}\n Cured {item[3]} \n Death {item[4]}\n"
+        nText = f"State  {item[1]}  \nTotal case {item[2]}\n Cured {item[3]} \n Death {item[4]}\n"
         notifyMe(nTitle, nText)
         time.sleep(5)
+    # time.sleep(7200)
