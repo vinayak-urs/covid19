@@ -6,7 +6,7 @@ import time
 
 def notifyMe(head, txt):
     notification.notify(title=head, message=txt,
-                        app_icon='C:\\Users\\Gaviria\\Desktop\\covid19\\icon.ico', timeout=10, ticker='', toast=False)
+                        app_icon='icon.ico', timeout=10, ticker='', toast=False)
 
 
 def getdata(url):
