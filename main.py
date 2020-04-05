@@ -5,8 +5,7 @@ import time
 
 
 def notifyMe(head, txt):
-    notification.notify(title=head, message=txt,
-                        app_icon='icon.ico', timeout=10, ticker='', toast=False)
+    notification.notify(title=head, message=txt,app_icon='icon.ico', timeout=10, ticker='', toast=False)
 
 
 def getdata(url):
@@ -14,53 +13,79 @@ def getdata(url):
     return r.text
 
 
-def totalcase(lst):
-    return lst[2]
+def firstelemnt(lst):
+    return lst[0]
 
 
 if __name__ == "__main__":
-    #  notifyMe("pagal", "lets track the COVID 19")
+
+    # this portion is the soup from the mohfw.gov.in
     myHtmldata = getdata("https://www.mohfw.gov.in/")
     soup = BeautifulSoup(myHtmldata, "html.parser")
-    myDataStr = ""
-    itemtotal = []
 
+    rawStatus = ""
+
+    # here the parsed html will be shaped in the desired data string
     for tr in soup.find_all("tbody")[0].find_all("tr"):
-        myDataStr += tr.get_text()
-    myDataStr = myDataStr[1:]
-    itemlist = myDataStr.split("\n\n")
-    itemlst = itemlist[:29]
-    # itemtotal = list(map(list, itemlist[27:]))
-    itemtotal = itemlist[30:31]
-    total2 = []
-    total2 = itemlist[31:33]
-    ind = ""
-    for i in itemtotal:
-        ind += i
-    ind += "\n"
-    for i in total2:
-        ind += i
-    ortotal = []
-    ortotal = ind.split("\n")
-    # print(ortotal)
-    ortotal.insert(0, 000)
-    itemls = []
-    for item in itemlst:
-        itemls.append(item.split("\n"))
-    # # print(itemlst)
-    for item in itemls:
+        rawStatus += tr.get_text()
+    rawStatus = rawStatus[1:]
+    # This is the statewise divided data of the whole data
+    pureStatus = rawStatus.split("\n\n")
+
+    # this is data of the all states/city in list format
+    stateData = pureStatus[:30]
+
+    # This is the data of the india collectively
+    restData = pureStatus[30:31]
+    restData2 = []
+    restData2 = pureStatus[31:33]
+
+    # string to manipulate the data of the india from the website in the respective manner
+    india_str = ""
+    for i in restData:
+        india_str += i
+
+    india_str += "\n"
+
+    for i in restData2:
+        india_str += i
+
+    # Whole string of the india is piled now time to mantain in a single string
+    indiaData = []
+    indiaData = india_str.split("\n")
+
+    # Updating the sreial no of the india
+    indiaData.insert(0, 31)
+    indiaData[1] = "INDIA"
+
+    # Cloning the data to the new list
+    orData = []
+    for item in stateData:
+        orData.append(item.split("\n"))
+
+    # maitining the string data in the int data as far as ease of the sorting and all things
+    for item in orData:
+        item[0] = int(item[0])
         item[2] = int(item[2])
-    ortotal[1] = "INDIA"
-    itemls.sort(key=totalcase, reverse=True)
-    itemls = itemls[:3]
-    itemls.append(ortotal)
+        item[3] = int(item[3])
+        item[4] = int(item[4])
+    orData.sort(key=firstelemnt, reverse=False)
+
+    orData.append(indiaData)
     print("STATES/CITY  CASES CURED DIED")
-    for item in itemls[:4]:
+    # print(orData[:31])
+    # printing the data of the states and city in india
+    # printing the data of the states and city in india
+    n = 0
+    for item in orData[:31]:
         for i in item[1:]:
             print(i, end="  ")
-        print("")
+        n = n+1
         nTitle = " Cases of COVID19"
         nText = f"State  {item[1]}  \nTotal case {item[2]}\n Cured {item[3]} \n Death {item[4]}\n"
-        notifyMe(nTitle, nText)
-        time.sleep(5)
-    # time.sleep(7200)
+        if n < 4 or item[0] == 31:
+            notifyMe(nTitle, nText)
+        time.sleep(.1)
+        print("")
+    #  time.sleep(7200)
+    # put here the time in second after which u want the update and noification
